@@ -58,7 +58,7 @@ public class BookController {
         }
     }
 
-    @GetMapping("/get-contact")
+    @GetMapping("/get-book")
     public ResponseEntity<?> getAllBooks(){
         try {
             List<Book> books = bookServices.getAllBooks();

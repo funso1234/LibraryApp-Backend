@@ -2,6 +2,7 @@ package com.semicolon.africa.Services;
 
 import com.semicolon.africa.Data.Model.Book;
 import com.semicolon.africa.Data.Repositories.BookRepository;
+import com.semicolon.africa.Exception.BookAlreadyExistException;
 import com.semicolon.africa.dtos.Request.AddBookRequest;
 import com.semicolon.africa.dtos.Request.RemoveBookRequest;
 import com.semicolon.africa.dtos.Request.UpdateBookRequest;
@@ -20,6 +21,7 @@ public class BookServicesImpl implements BookServices {
     @Override
     public AddBookResponse addBook(AddBookRequest addBookRequest) {
         Book book = new Book();
+        validate(addBookRequest);
         book.setAuthor(addBookRequest.getAuthor());
         book.setTitle(addBookRequest.getTitle());
         book.setIsbn(addBookRequest.getIsbn());
@@ -77,4 +79,14 @@ public class BookServicesImpl implements BookServices {
     public Long getTotalBook() {
         return bookRepository.count();
     }
+
+    private void validate(AddBookRequest addBookRequest){
+        for (Book book : bookRepository.findAll()){
+            if(book.getTitle().equals(addBookRequest.getTitle())){
+                throw new BookAlreadyExistException("Book already exist");
+            }
+        }
+    }
 }
+
+

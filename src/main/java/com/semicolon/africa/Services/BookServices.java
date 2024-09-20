@@ -16,6 +16,7 @@ public interface BookServices {
     UpdateBookResponse updateBook(UpdateBookRequest updateBookRequest);
     List<Book> getAllBooks();
     Long getTotalBook();
+
 }
 
 

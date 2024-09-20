@@ -13,6 +13,9 @@ public interface LibrarianServices {
     LogoutLibrarianResponse logoutLibrabrian(LogoutLibrarianRequest logoutLibrarianRequest);
     UpdateLibrarianResponse updateLibrarian(UpdateLibrarianRequest updateLibrarianRequest);
     DeleteLibrarianResponse deleteLibrarian(DeleteLibrarianRequest deleteLibrarianRequest);
+
+    AddBookRequest addLibrarianBook(AddBookRequest addBookRequest);
+
     Long getTotalLibrarian();
     List<Librarian> getALibrarian();
     List<Book> getAllBookForLibrarian(String email);

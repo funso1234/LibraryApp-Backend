@@ -2,15 +2,10 @@ package com.semicolon.africa.Controller;
 
 import com.semicolon.africa.Data.Model.Book;
 import com.semicolon.africa.Data.Model.Librarian;
+import com.semicolon.africa.Services.BookServices;
 import com.semicolon.africa.Services.LibrarianServices;
-import com.semicolon.africa.dtos.Request.DeleteLibrarianRequest;
-import com.semicolon.africa.dtos.Request.LoginLibrarianRequest;
-import com.semicolon.africa.dtos.Request.RegisterLibrarianRequest;
-import com.semicolon.africa.dtos.Request.UpdateLibrarianRequest;
-import com.semicolon.africa.dtos.Response.DeleteLibrarianResponse;
-import com.semicolon.africa.dtos.Response.LoginLibrarianResponse;
-import com.semicolon.africa.dtos.Response.RegisterLibrarianResponse;
-import com.semicolon.africa.dtos.Response.UpdateLibrarianResponse;
+import com.semicolon.africa.dtos.Request.*;
+import com.semicolon.africa.dtos.Response.*;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +20,8 @@ import java.util.List;
 @RequestMapping("/api/v1/librarian")
 @AllArgsConstructor
 public class LibrarianController {
+    @Autowired
+    private BookServices bookServices;
     @Autowired
     private LibrarianServices librarianServices;
 
@@ -93,16 +90,27 @@ public class LibrarianController {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+    @PostMapping("/add-book-to-librarian")
+    public ResponseEntity<?> addBookToLibrarian(@RequestBody AddBookRequest addBookRequest) {
+        try{
+            AddBookResponse addBookResponse = bookServices.addBook(addBookRequest);
+            return new ResponseEntity<>(addBookResponse, HttpStatus.CREATED);
+        }
+        catch (Exception exception){
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 
-//    @GetMapping("/get-all-books- for-a-librarian")
-//    public ResponseEntity<?> getALibrarianAllBooks() {
-//        try {
-//            List<Book> bookList = librarianServices.getAllBookForLibrarian();
-//            return new ResponseEntity<>(bookList, HttpStatus.OK);
-//        }
-//        catch (Exception exception){
-//            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
-//        }
-//    }
+
+    @GetMapping("/get-all-books-for-a-librarian")
+    public ResponseEntity<?> getAllBooksForALibrarian() {
+        try {
+            List<Book> bookList = librarianServices.getAllBookForLibrarian("librarianId");
+            return new ResponseEntity<>( new ApiResponse(true, bookList), HttpStatus.OK);
+        } catch (Exception exception) {
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
 }
